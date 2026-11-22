@@ -1,0 +1,5 @@
+FROM postgres:16-alpine
+
+ENV POSTGRES_DB=recaudo_test
+ENV POSTGRES_USER=recaudo_user
+ENV POSTGRES_PASSWORD=recaudo_pass

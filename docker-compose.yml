@@ -1,0 +1,38 @@
+#los 2 servicios comunicados por el nombre db
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    image: recaudo-ci-db:latest
+    container_name: recaudo_db_test
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-recaudo_test}
+      POSTGRES_USER: ${POSTGRES_USER:-recaudo_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-recaudo_pass}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-recaudo_user} -d ${POSTGRES_DB:-recaudo_test}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    networks:
+      - recaudo_net
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: recaudo-ci-api:latest
+    container_name: recaudo_api_test
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - recaudo_net
+
+networks:
+  recaudo_net:
+    driver: bridge
