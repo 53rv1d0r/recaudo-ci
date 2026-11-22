@@ -14,7 +14,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "docker compose -p ${COMPOSE_PROJECT} build"
+                sh "docker-compose -p ${COMPOSE_PROJECT} build"
             }
         }
 
@@ -28,8 +28,8 @@ pipeline {
                     sh '''
                         set -e
                         POSTGRES_USER="$DB_USER" POSTGRES_PASSWORD="$DB_PASSWORD" POSTGRES_DB="recaudo_test" \
-                            docker compose -p "$COMPOSE_PROJECT" up -d --wait
-                        docker compose -p "$COMPOSE_PROJECT" exec -T api pytest -v
+                            docker-compose -p "$COMPOSE_PROJECT" up -d --wait
+                        docker-compose -p "$COMPOSE_PROJECT" exec -T api pytest -v
                     '''
                 }
             }
@@ -38,7 +38,7 @@ pipeline {
 
     post {
         always {
-            sh "docker compose -p ${COMPOSE_PROJECT} down -v --remove-orphans || true"
+            sh "docker-compose -p ${COMPOSE_PROJECT} down -v --remove-orphans || true"
         }
         success {
             echo "Build ${env.BUILD_NUMBER} exitoso: pruebas y conexion con db aprobadas."

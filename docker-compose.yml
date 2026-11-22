@@ -1,11 +1,10 @@
-#los 2 servicios comunicados por el nombre db
+# los 2 servicios comunicados por el nombre db
 services:
   db:
     build:
       context: .
       dockerfile: Dockerfile.db
     image: recaudo-ci-db:latest
-    container_name: recaudo_db_test
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-recaudo_test}
       POSTGRES_USER: ${POSTGRES_USER:-recaudo_user}
@@ -23,7 +22,6 @@ services:
       context: .
       dockerfile: Dockerfile
     image: recaudo-ci-api:latest
-    container_name: recaudo_api_test
     environment:
       DB_HOST: db
       DB_PORT: 5432
