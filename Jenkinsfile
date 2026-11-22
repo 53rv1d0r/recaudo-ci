@@ -46,7 +46,7 @@ pipeline {
                             -e DB_HOST=db \
                             -e DB_PORT=5432 \
                             recaudo-ci-api:${env.BUILD_NUMBER} \
-                            pytest -v
+                            python -m pytest -v
                     """
                 }
             }
